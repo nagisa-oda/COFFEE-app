@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <!--スマホの横幅表示に合わせるための設定-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!--font-->
+        <!--preconnectでドメインに事前接続。ページの読み込み速度向上に寄与-->
+        <!--Content Delivery Networkでファイルを使える(フォント)-->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap">
+
+        <!---icons-->
+        <!--コーヒーカップやごみ箱などのアイコンを表示するためのライブラリ-->
+        <!--アイコンを取り出すには、<i data-lucide="coffee"></i>のように書く-->
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <!--レーダーチャートを作る用。ライブラリ名は"chart.js"-->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        
+        <link rel="stylesheet" href="styles/main.css">
+    </head>
+    <body>
+    <div id="app">
+        <header class="glass-header">
+            <div class="logo">
+                <i data-lucide="coffee"></i>
+                <span>BeanJournal</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            
+            <section id="home-page">
+                <div id="card-area"></div>
+                
+                <button id="add-btn" style="position:fixed; bottom:20px; right:20px; font-size:30px; width: 60px; height: 60px; border-radius: 50%; border: none; background: var(--primary); color: white; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                    +
+                </button>
+            </section>
+            
+            <section id="add-page" class="hidden">
+                <div class="glass-card input-form"> <h2>New Coffee Entry</h2>
+                    
+                    <div class="form-group">
+                        <input type="text" id="product-name" placeholder="商品名(必須)">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="text" id="country" placeholder="生産国名(必須)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="farm" placeholder="農園(必須)">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="variety" placeholder="品種(必須)">
+                    </div>
+                   
+                    <div class="form-group">
+                        <input type="text" id="aroma" placeholder="風味や感想(必須)">
+                    </div>
+                   
+                    <div class = "form-group">
+                        <input type="text" id = "process" placeholder="プロセス">
+                    </div>
+                   
+                    <div class = "form-group">
+                        <input type = "text" id = "dripper" placeholder="ドリッパー">
+                    </div>
+
+                    <div class = "form-group">
+                        <input type = "text" id = "shop" placeholder="購入店">
+                    </div>
+
+                    <div class="form-group">
+                        <label>酸味</label>
+                        <input type="range" id = "acidity" min="1" value = "3" max="5" >
+                        <span id = "acidity-value">3</span>
+                    </div>
+
+                    <div class = "form-group">
+                        <label>苦味</label>
+                        <input type="range" id = "bitterness" min="1" value="3" max="5"> 
+                        <span id = "bitterness-value">3</span>
+                    </div>
+
+                    <div class = "form-group">
+                        <label>コク</label>
+                        <input type="range" id = "richness" min="1" value="3" max="5">
+                        <span id = "richness-value">3</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>甘味</label>
+                        <input type="range" id="sweetness" min="1" value="3" max="5">
+                        <span id = "sweetness-value">3</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>香り</label>
+                        <input type="range" id="aromaStrength" min="1" value="3" max="5">
+                        <span id = "aromaStrength-value">3</span>
+                    </div>
+                    
+                    <div class="button-group" style="display: flex; gap: 10px; margin-top: 20px;">
+                        <button id="btn-cancel" class="action-btn">キャンセル</button>
+                        <button id="btn-save" class="action-btn" style="background: var(--primary); color: white;">Save Entry</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
