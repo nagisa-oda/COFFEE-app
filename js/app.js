@@ -307,6 +307,15 @@ list.addEventListener('click', function(e) {
         console.log('保存完了！ ID:' + likeId + ' のいいね数:' + count);
 
     }
+    else if(editBtn){
+    // ここに編集ボタンが押されたときの処理を書く
+    // ヒント: editBtn.dataset.id でIDを取得できます
+    // ヒント: editCard()という関数を呼び出す
+    console.log("編集開始!")
+    
+
+    
+    }
 })
 
 const savedLogs = localStorage.getItem('coffeeLogs');
