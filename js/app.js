@@ -16,6 +16,8 @@ let editingId = null;
 addBtn.addEventListener('click', function() {
     homePage.classList.add('hidden');
     addPage.classList.remove('hidden');
+    resetForm(); // 念のため
+    editingId = null; // 念のため
 
 })
 
@@ -23,6 +25,8 @@ addBtn.addEventListener('click', function() {
 cancelBtn.addEventListener('click', function() {
     addPage.classList.add('hidden');
     homePage.classList.remove('hidden');
+    resetForm();
+    editingId = null;
 })
 
 
@@ -109,16 +113,7 @@ saveBtn.addEventListener('click', function() {
     localStorage.setItem('coffeeLogs', JSON.stringify(coffeeLogs));
     renderCard(log);
 
-    /* valueプロパティは現在の値を示すため、ここでidがproduct-nameの要素を空白にすることで
-       カードを追加した後は入力欄が空白になる*/
-    document.getElementById('product-name').value = "";
-    document.getElementById('country').value = "";
-    document.getElementById('farm').value = "";
-    document.getElementById('variety').value = "";
-    document.getElementById('aroma').value = "";
-    document.getElementById('process').value = "";
-    document.getElementById('dripper').value = "";
-    document.getElementById('shop').value = "";
+    resetForm();
 
     addPage.classList.add('hidden');
     homePage.classList.remove('hidden');
@@ -249,6 +244,25 @@ function renderCard(log) {
     })
 
     lucide.createIcons();
+}
+
+
+function resetForm() {
+    // フォームの入力欄をすべて空にする。
+    document.getElementById('product-name').value = "";
+    document.getElementById('country').value = "";
+    document.getElementById('farm').value = "";
+    document.getElementById('variety').value = "";
+    document.getElementById('aroma').value = "";
+    document.getElementById('process').value = "";
+    document.getElementById('dripper').value = "";
+    document.getElementById('shop').value = "";
+
+    slidersIds.forEach(function(id) {
+        const slider = document.getElementById(id);
+        slider.value = 3;
+        document.getElementById(id + '-value').textContent = 3;
+    })
 }
 
 
