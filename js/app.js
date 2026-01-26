@@ -1,16 +1,30 @@
-const saveBtn = document.getElementById('btn-save');
 const cardArea = document.getElementById('card-area');
-
+const saveBtn = document.getElementById('btn-save');
 const addBtn = document.getElementById('add-btn');
 const cancelBtn = document.getElementById('btn-cancel');
 const editBtn = document.getElementById('edit-btn');
-
 const homePage = document.getElementById('home-page');
 const addPage = document.getElementById('add-page');
+const slidersIds = ['acidity', 'bitterness', 'richness', 'sweetness', 'aromaStrength'];
 // コーヒーの記録を保存するためのリスト
 let coffeeLogs = [];
 // 編集中のデータを管理するための変数
 let editingId = null;
+
+function switchPage(pageName) {
+    // ページ遷移用の関数
+        if (pageName === 'add') {
+            homePage.classList.add('hidden');
+            addPage.classList.remove('hidden');
+        } else {
+            addPage.classList.add('hidden');
+            homePage.classList.remove('hidden');
+        }
+    }
+    
+function syncStorage() {
+    localStorage.setItem(coffeeLogs, JSON.stringify(coffeeLogs));
+}
 
 // 追加ボタンを押した時に、入力画面へ遷移する
 addBtn.addEventListener('click', function() {
@@ -30,8 +44,6 @@ cancelBtn.addEventListener('click', function() {
 })
 
 
-const slidersIds = ['acidity', 'bitterness', 'richness', 'sweetness', 'aromaStrength'];
-
 // スライダーの値をリアルタイムで変更し、画面表示する処理
 slidersIds.forEach(function(id) {
     const slider = document.getElementById(id);
@@ -41,6 +53,7 @@ slidersIds.forEach(function(id) {
         valueSpan.textContent = slider.value;
     })
 })
+
 /* saveBtnにイベントを設定 */
 saveBtn.addEventListener('click', function() {
 
@@ -132,7 +145,7 @@ function renderCard(log) {
     const displayName = log.productName || log.beanName || '名称未設定';
 
     const cardHtml = /*html*/`
-        <div class="glass-card">
+        <div class="glass-card" data-id="${log.id}">
             <div class="card-header">
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -180,30 +193,35 @@ function renderCard(log) {
     `;
 
     // 画面に追加する
-    // list(card-area)の一番上に新しいカードを追加する
     cardArea.insertAdjacentHTML('afterbegin', cardHtml);
+    // チャートの初期化
+    initChart(log.id, log.flavor);
+}
 
+function initChart(id, flavor) {
     // レーダーチャートを作成
-    const ctx = document.getElementById(`chart-${log.id}`).getContext('2d');
+    const ctx = document.getElementById(`chart-${id}`).getContext('2d');
     new Chart(ctx, {
         type: 'radar', // レーダーチャート
         data: {
             labels: ['Acidity', 'Bitterness', 'Body', 'Sweetness', 'Aroma'], // 各軸のラベル
             datasets: [
-                    {
+                {
                     label: 'Flavor Profile', // 凡例に表示される名前
-                    data: [log.flavor.acidity,
-                        log.flavor.bitterness,
-                        log.flavor.richness,
-                        log.flavor.sweetness,
-                        log.flavor.aromaStrength],
-                        backgroundColor: 'rgba(212, 175, 55, 0.2)',
-                        borderColor: 'rgba(212, 175, 55, 1)',
-                        borderWidth: 2,
-                        pointBackgroundColor: '#d4af37' // 点の色
-                    }
-                ],
-            },
+                    data: [
+                        flavor.acidity,
+                        flavor.bitterness,
+                        flavor.richness,
+                        flavor.sweetness,
+                        flavor.aromaStrength
+                    ],
+                    backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                    borderColor: 'rgba(212, 175, 55, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: '#d4af37' // 点の色
+                }
+            ],
+        },
         options: {
             responsive: true, // 親要素に合わせてサイズを自動調整する
             maintainAspectRatio: false, // サイズ変更の際に、元のキャンバスのアスペクト比(width/height)を維持する
@@ -216,12 +234,8 @@ function renderCard(log) {
                         color: '#a0a0a0',
                         backdropColor: 'transparent',
                         display: false
-
                     },
                     grid: { // グラフ背景の軸線やメモリ線の表示・色・太さ・間隔をカスタム
-                        color: 'rgba(255, 255, 255, 0.1)'
-                    },
-                    grid: {
                         color: 'rgba(255, 255, 255, 0.1)'
                     },
                     pointLabels: {
@@ -241,11 +255,10 @@ function renderCard(log) {
                 }
             }
         }
-    })
+    });
 
     lucide.createIcons();
 }
-
 
 function resetForm() {
     // フォームの入力欄をすべて空にする。
@@ -262,9 +275,8 @@ function resetForm() {
         const slider = document.getElementById(id);
         slider.value = 3;
         document.getElementById(id + '-value').textContent = 3;
-    })
+    });
 }
-
 
 // 親エリア(list)にクリックイベントを仕掛ける
 cardArea.addEventListener('click', function(e) {
@@ -392,7 +404,7 @@ if (savedLogs) {
     coffeeLogs = JSON.parse(savedLogs);
 
     // リストから要素を一つづつ取り出して、カードを表示する。
-    // 後で入力する項目が増える可能性がある空、forEachを使う
+    // 後で入力する項目が増える可能性があるから、forEachを使う
     coffeeLogs.forEach(function(log) {
         renderCard(log);
     });
