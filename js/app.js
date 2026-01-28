@@ -11,6 +11,14 @@ let coffeeLogs = [];
 // 編集中のデータを管理するための変数
 let editingId = null;
 
+openModal(
+    "削除の確認",
+    "本当に削除しますか？",
+    () => {
+
+    }
+)
+
 function switchPage(pageName) {
     // ページ遷移用の関数
         if (pageName === 'add') {
@@ -22,7 +30,7 @@ function switchPage(pageName) {
         }
     }
     
-function syncStorage() {
+function syncStorage() { // データを保存する
     localStorage.setItem(coffeeLogs, JSON.stringify(coffeeLogs));
 }
 
@@ -279,30 +287,30 @@ cardArea.addEventListener('click', function(e) {
 
     // クリックされたものが削除ボタンか、いいねボタンかを確認する
     // 対象のHTMLタグのオブジェクトが渡される
-    const deletBtn = e.target.closest('.delete-btn');
+    const deleteBtn = e.target.closest('.delete-btn');
     const likeBtn  = e.target.closest('.like-btn');
     const editBtn  = e.target.closest('.edit-btn');
 
-    if (deletBtn){
+    if (deleteBtn){
         const result = window.confirm("本当に削除しますか？");
         if(result === true) {
 
             // ボタンに埋め込んだIDを読み取る
             // dataset.idは文字としてとれるから、Number()で数値に変換する
-            const deletId = Number(deletBtn.dataset.id);
+            const deleteId = Number(deleteBtn.dataset.id);
 
             // 配列(coffeeLogs)から対称のIDを読み取る
             // filter: 条件に合うものだけ残して、新しい配列を作る命令
-            // filterメソッド: 条件にあうものだけ(ここではdeletIdとidが一致しない要素)を残して、新しい配列を作る
+            // filterメソッド: 条件にあうものだけ(ここではdeleteIdとidが一致しない要素)を残して、新しい配列を作る
             // IDが一致しない(消さない)やつだけ残すという書き方をする
             // 結果、消したい要素だけが消えた新しいリストで、元の変数を上書きする
-            coffeeLogs = coffeeLogs.filter(log => log.id != deletId);
+            coffeeLogs = coffeeLogs.filter(log => log.id != deleteId);
 
             // 最新の状態になった配列を保存し直す(上書きする)
             localStorage.setItem('coffeeLogs', JSON.stringify(coffeeLogs));
 
-            // そのとき特定のカードの削除ボタンのidを持つdeletBtnから見て、親要素であるカード.glass-cardを探す
-            const card = deletBtn.closest('.glass-card');
+            // そのとき特定のカードの削除ボタンのidを持つdeleteBtnから見て、親要素であるカード.glass-cardを探す
+            const card = deleteBtn.closest('.glass-card');
             console.log(card);
             if(card) {
                 card.remove();
