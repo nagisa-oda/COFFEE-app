@@ -130,14 +130,14 @@
     <div id = "custom-modal" class = "hidden modal-overlay"> <!---backgroundクラスは、モーダルが表示されたときに背景を暗くするためのクラス-->
         <div class = "glass-card modal-content">
             <!--タイトル部分。動的に変更したい-->
-            <h3 id = "modal-title">確認</h3>
+            <h3 id = "modal-title" style = "color: white;">確認</h3>
         
             <!---確認メッセージ。動的に変更したい-->
             <p id = "modal-message">本当に実行しますか？</p>
 
-            <div class = "button-group" style = "display: flex; gap: 10px; margin-top: 20px;">
+            <div class = "button-group" style = "display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
                 <button id = "modal-cancel" class = "action-btn">キャンセル</button>
-                <button id = "modal-execute" class = "action-btn">実行</button>
+                <button id = "modal-execute" class = "action-btn modal-execute-btn">実行</button>
             </div>
         
         </div>
