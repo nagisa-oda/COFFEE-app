@@ -27,6 +27,7 @@
     .form-group label {
         width: auto;
         min-width: auto;
+        font-size: 0.85rem;
     }
 
     
@@ -34,10 +35,15 @@
         font-size: 16px; /*iOSの自動ズームを防止*/
     }
 
-    /*スライダーのコンテナ調整*/
-    input[type = "range"] {
-        flex: 1;
-        margin-right: 8px;
+    /* スライダーの数値を中央に配置 */
+    .form-group span {
+        display: block;
+        width: 100%;
+        text-align: center;
+        font-weight: 600;
+        color: rgb(151, 145, 145);
+        font-size: 1.1rem;
+        
     }
 
     /*タイトルのフォントサイズ調整*/
@@ -82,4 +88,62 @@
         padding: 12px;
     }
 
+}
+
+/*メディアクエリ(タブレット用)*/
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    .main-content {
+        max-width: 700px;
+        padding: 0 24px;
+    }
+
+    .glass-card {
+        padding: 24px;
+    }
+
+    /* タブレットではフォームを横並びに戻す */
+    .form-group {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .form-group label {
+        width: 120px;
+        min-width: 120px;
+    }
+
+    /* スライダーの数値は横並びに戻す */
+    .form-group span {
+        display: inline;
+        width: auto;
+        text-align: left;
+        margin-top: 0;
+        margin-left: 8px;
+    }
+
+    /* 追加ボタンのサイズ調整 */
+    #add-btn {
+        width: 68px;
+        height: 68px;
+        bottom: 24px;
+        right: 24px;
+    }
+
+    /* チャートの高さ調整 */
+    .chart-container {
+        height: 280px;
+    }
+
+    /* ボタングループは横並びに戻す */
+    .button-group {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .button-group .action-btn {
+        width: auto;
+        flex: 1;
+        padding: 12px 24px;
+    }
 }
