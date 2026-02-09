@@ -24,6 +24,15 @@ function switchPage(pageName) {
     }
 }
 
+function logDate(timestamp) {
+    const now = new Date(timestamp); // タイムスタンプから日付を取得
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // ゼロ埋め(この場合はゼロが最大で二つ)
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}/${month}/${day}`;
+
+}
+
 // フォームのリセット処理
 function resetForm() {
     document.getElementById('product-name').value = "";
@@ -54,6 +63,10 @@ function renderCard(log) {
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <h3>${displayName}</h3>
+                    </div>
+
+                    <div class = "meta-info">
+                        <span><i data-lucide = "calendar"></i> ${logDate(log.id)}</span>
                     </div>
 
                     <div class="meta-info">
