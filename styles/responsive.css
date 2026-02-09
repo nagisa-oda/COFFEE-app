@@ -43,7 +43,11 @@
         font-weight: 600;
         color: rgb(151, 145, 145);
         font-size: 1.1rem;
-        
+    }
+
+    /* お気に入りボタンのテキストを非表示（アイコンのみ） */
+    .favorite-btn span {
+        display: none;
     }
 
     /*タイトルのフォントサイズ調整*/

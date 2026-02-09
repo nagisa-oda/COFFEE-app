@@ -54,9 +54,6 @@ function renderCard(log) {
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <h3>${displayName}</h3>
-                        <button class="action-btn edit-btn" data-id="${log.id}">
-                            <i data-lucide="edit"></i>
-                        </button>
                     </div>
 
                     <div class="meta-info">
@@ -87,8 +84,13 @@ function renderCard(log) {
             </div>
 
             <div class="card-footer">
-                <button class="action-btn like-btn" data-id = "${log.id}"><i data-lucide="thumbs-up"></i>
-                    <span class = "like-count">0</span></button>
+                <button class="action-btn favorite-btn ${log.isFavorite ? 'active' : ''}" data-id="${log.id}">
+                    <i data-lucide="star"></i>
+                    <span>${log.isFavorite ? 'お気に入り' : 'お気に入りに追加'}</span>
+                </button>
+
+                <button class = "action-btn edit-btn " data-id = "${log.id}"> 
+                    <i data-lucide = "edit"></i>
                 <button class="action-btn delete-btn" data-id = "${log.id}">
                     <i data-lucide="trash-2"></i>
                 </button>
@@ -235,7 +237,7 @@ saveBtn.addEventListener('click', function() {
         process: process,
         dripper: dripper,
         shop: shop,
-        likes: 0,
+        isFavorite: false,
         flavor: {
             acidity: acidity,
             bitterness: bitterness,
@@ -250,7 +252,7 @@ saveBtn.addEventListener('click', function() {
         // 編集モード
         const index = coffeeLogs.findIndex(log => log.id === editingId);
         log.id = editingId;
-        log.likes = coffeeLogs[index].likes;
+        log.isFavorite = coffeeLogs[index].isFavorite;
         coffeeLogs[index] = log;
 
         const oldCard = document.querySelector(`[data-id="${editingId}"]`).closest('.glass-card');
@@ -274,12 +276,42 @@ saveBtn.addEventListener('click', function() {
 
 // カードエリアのイベント委譲（削除、いいね、編集）
 cardArea.addEventListener('click', function(e) {
+    // イベントが発生したhtml要素の最も近い親要素を取得
     const deleteBtn = e.target.closest('.delete-btn');
-    const likeBtn = e.target.closest('.like-btn');
+    const favoriteBtn = e.target.closest('.favorite-btn');
     const editBtn = e.target.closest('.edit-btn');
 
+    if (favoriteBtn) {
+        const favoriteId = Number(favoriteBtn.dataset.id); //dataset.idはhtml要素のdata-id属性の値を取得
+        const targetLog = coffeeLogs.find(log => log.id === favoriteId);
+
+        if (targetLog) {
+            targetLog.isFavorite = !targetLog.isFavorite;
+            syncStorage();
+            
+            // ボタンの表示を更新
+            const buttonTextSpan = favoriteBtn.querySelector('span');
+            const buttonIcon = favoriteBtn.querySelector('i');
+            
+            if (targetLog.isFavorite) {
+                favoriteBtn.classList.add('active'); 
+                if (buttonTextSpan) {
+                    buttonTextSpan.textContent = 'お気に入り';
+                }
+            } else {
+                favoriteBtn.classList.remove('active');
+                if (buttonTextSpan) {
+                    buttonTextSpan.textContent = 'お気に入りに追加';
+                }
+            }
+            
+            // アイコンを再描画
+            lucide.createIcons();
+        }
+    }
+
     // 削除ボタンの処理
-    if (deleteBtn) {
+    else if (deleteBtn) {
         const deleteId = Number(deleteBtn.dataset.id);
         
         openModal(
@@ -293,31 +325,6 @@ cardArea.addEventListener('click', function(e) {
                 cardToDelete.remove();
             }
         );
-    }
-
-    // いいねボタンの処理
-    else if (likeBtn) {
-        const countSpan = likeBtn.querySelector('.like-count');
-        let count = parseInt(countSpan.textContent);
-
-        // いいね状態のトグル
-        if (!likeBtn.classList.contains('active')) {
-            likeBtn.classList.add('active');
-            count++;
-        } else {
-            likeBtn.classList.remove('active');
-            count--;
-        }
-
-        countSpan.textContent = count;
-
-        // データの更新と保存
-        const likeId = Number(likeBtn.dataset.id);
-        const targetLog = coffeeLogs.find(log => log.id === likeId);
-        if (targetLog) {
-            targetLog.likes = count;
-        }
-        syncStorage();
     }
 
     // 編集ボタンの処理
@@ -364,6 +371,13 @@ cardArea.addEventListener('click', function(e) {
 const savedLogs = localStorage.getItem('coffeeLogs');
 if (savedLogs) {
     coffeeLogs = JSON.parse(savedLogs);
+    
+    // 既存データに isFavorite フィールドを追加（互換性処理）
+    coffeeLogs = coffeeLogs.map(log => ({
+        ...log,
+        isFavorite: log.isFavorite !== undefined ? log.isFavorite : false
+    }));
+    
     coffeeLogs.forEach(function(log) {
         renderCard(log);
     });
