@@ -250,6 +250,7 @@ saveBtn.addEventListener('click', function() {
         process: process,
         dripper: dripper,
         shop: shop,
+        note: note,
         isFavorite: false,
         flavor: {
             acidity: acidity,
