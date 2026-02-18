@@ -232,6 +232,19 @@ h3 {
     margin-left: 4px;
 }
 
+#btn-cancel {
+ 
+    background-color: #ff4444;
+    color: white;
+    border-radius: 16px;
+}
+
+#btn-save {
+    background: var(--primary);
+    color: white;
+    border-radius: 16px;
+}
+
 /* 画面を隠すためのクラス */
 .hidden {
     display: none !important;

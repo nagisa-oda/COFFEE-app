@@ -246,7 +246,7 @@ saveBtn.addEventListener('click', function() {
     const aromaStrength = document.getElementById('aromaStrength').value;
 
     // バリデーション
-    if (!productName || !country || !farm || !variety || !aroma) {
+    if (!productName || !country || !process || !variety || !aroma) {
         alert("入力が不完全です。必須項目を入力してください。");
         return;
     }
