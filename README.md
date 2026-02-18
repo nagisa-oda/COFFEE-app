@@ -1,4 +1,4 @@
-# ☕ BeanJournal Personal
+# ☕ reCoder Personal
 
 <div align="center">
 
